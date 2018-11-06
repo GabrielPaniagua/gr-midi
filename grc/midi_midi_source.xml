@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<block>
+  <name>midi_source</name>
+  <key>midi_midi_source</key>
+  <category>midi</category>
+  <import>import midi</import>
+  <make>midi.midi_source()</make>
+  <source>
+    <name>midiOut</name>
+    <type>message</type>
+  </source>
+</block>

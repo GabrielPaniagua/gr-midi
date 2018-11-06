@@ -1,0 +1,7 @@
+/*!
+ * \defgroup block GNU Radio MIDI C++ Signal Processing Blocks
+ * \brief All C++ blocks that can be used from the MIDI GNU Radio
+ *        module are listed here or in the subcategories below.
+ *
+ */
+

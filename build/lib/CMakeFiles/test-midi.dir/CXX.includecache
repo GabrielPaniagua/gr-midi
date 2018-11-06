@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pany/gr-midi/lib/qa_midi.cc
+qa_midi.h
+/home/pany/gr-midi/lib/qa_midi.h
+
+/home/pany/gr-midi/lib/qa_midi.h
+gnuradio/attributes.h
+-
+cppunit/TestSuite.h
+-
+
+/home/pany/gr-midi/lib/test_midi.cc
+config.h
+/home/pany/gr-midi/lib/config.h
+cppunit/TextTestRunner.h
+-
+cppunit/XmlOutputter.h
+-
+gnuradio/unittests.h
+-
+qa_midi.h
+/home/pany/gr-midi/lib/qa_midi.h
+iostream
+-
+fstream
+-
+

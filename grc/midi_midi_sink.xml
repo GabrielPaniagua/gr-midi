@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<block>
+  <name>midi_sink</name>
+  <key>midi_midi_sink</key>
+  <category>midi</category>
+  <import>import midi</import>
+  <make>midi.midi_sink()</make>
+  <sink>
+		<name>midiIn</name>
+		<type>message</type>
+  </sink>
+</block>

@@ -18,35 +18,39 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_MIDI_MIDI_SOURCE_IMPL_H
-#define INCLUDED_MIDI_MIDI_SOURCE_IMPL_H
 
-#include <midi/midi_source.h>
-#include "rtmidi/RtMidi.h"
+#ifndef INCLUDED_MIDI_MIDI_PDU_SOURCE_H
+#define INCLUDED_MIDI_MIDI_PDU_SOURCE_H
+
+#include <midi/api.h>
+#include <gnuradio/block.h>
 
 namespace gr {
   namespace midi {
 
-    class midi_source_impl : public midi_source
+    /*!
+     * \brief <+description of block+>
+     * \ingroup midi
+     *
+     */
+    class MIDI_API midi_pdu_source : virtual public gr::block
     {
-     private:
-      RtMidiIn *d_midiIn;
-
      public:
-      midi_source_impl();
-      ~midi_source_impl();
+      typedef boost::shared_ptr<midi_pdu_source> sptr;
 
-      // Where all the action really happens
-      void forecast (int noutput_items, gr_vector_int &ninput_items_required);
-
-      int general_work(int noutput_items,
-           gr_vector_int &ninput_items,
-           gr_vector_const_void_star &input_items,
-           gr_vector_void_star &output_items);
+      /*!
+       * \brief Return a shared_ptr to a new instance of midi::midi_pdu_source.
+       *
+       * To avoid accidental use of raw pointers, midi::midi_pdu_source's
+       * constructor is in a private implementation
+       * class. midi::midi_pdu_source::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make();
     };
 
   } // namespace midi
 } // namespace gr
 
-#endif /* INCLUDED_MIDI_MIDI_SOURCE_IMPL_H */
+#endif /* INCLUDED_MIDI_MIDI_PDU_SOURCE_H */
 

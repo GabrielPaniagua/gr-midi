@@ -1,0 +1,130 @@
+/* -*- c++ -*- */
+/* 
+ * Copyright 2018 <+YOU OR YOUR COMPANY+>.
+ * 
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ * 
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this software; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street,
+ * Boston, MA 02110-1301, USA.
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <gnuradio/io_signature.h>
+#include "midi_stream_source_impl.h"
+
+//status of emision
+#define ST_IDLE 1001
+#define ST_SEND 1002
+
+namespace gr {
+  namespace midi {
+
+    midi_stream_source::sptr
+    midi_stream_source::make()
+    {
+      return gnuradio::get_initial_sptr
+        (new midi_stream_source_impl());
+    }
+	/*
+     * The private constructor
+	static void midi_stream_source::callback_midi_source_stream( double deltatime, std::vector< unsigned char > *message, void *userData ){
+		unsigned int nBytes = message->size();
+	}
+    */
+    /*
+     * The private constructor
+     */
+    midi_stream_source_impl::midi_stream_source_impl()
+      : gr::sync_block("midi_stream_source",
+              gr::io_signature::make(0, 0, 0),
+              gr::io_signature::make(1, 1, sizeof(uint8_t)))
+    {
+	  //inicializacion de puerto midi in
+	  try {
+	    d_midiIn = new RtMidiIn();
+	  }catch ( RtMidiError &error ) {
+	    error.printMessage();
+	  }
+	  try {
+		d_midiIn->openVirtualPort();
+	  }catch ( RtMidiError &error ) {
+		error.printMessage();
+	  }
+	  d_currentState = ST_IDLE;
+	  d_position = 0;
+	  d_vec_limit = 0;
+	}
+
+    /*
+     * Our virtual destructor.
+     */
+    midi_stream_source_impl::~midi_stream_source_impl()
+    {
+    }
+
+    int
+    midi_stream_source_impl::work(int noutput_items,
+        gr_vector_const_void_star &input_items,
+        gr_vector_void_star &output_items)
+    {
+      uint8_t *out = (uint8_t *) output_items[0];
+      
+      
+      //better a FSM instead
+      switch(d_currentState) {
+		case ST_IDLE:
+			//check the midi Queue
+			d_stamp = d_midiIn->getMessage( &d_message );
+			d_vec_limit = d_message.size();
+			//if the queue is empty out 0xFF byte
+			if(d_vec_limit == 0){
+				out[0] = 0xFF;
+			//if the queue is not empty change state and starts read
+			}else{
+				d_position = 0;
+				out[0] = d_message[d_position++];
+				std::cout << "position "<< d_position << ", vector "<< d_vec_limit << ", byte " << (int)out[0] << std::endl;
+				d_currentState = ST_SEND;
+			}
+			break;
+      	case ST_SEND:
+			//if the message is fully readed
+			if(d_position >= d_vec_limit){
+				d_stamp = d_midiIn->getMessage( &d_message );
+				d_vec_limit = d_message.size();
+				if(d_vec_limit == 0){
+					out[0] = 0xFF;
+					d_currentState = ST_IDLE;
+				}else{
+					d_position = 0;
+					out[0] = d_message[d_position++];
+					std::cout << "position "<< d_position << ", vector "<< d_vec_limit << ", byte " << (int)out[0] << std::endl;
+				}
+			//if the message is been readed
+			}else{
+				out[0] = d_message[d_position++];
+				std::cout << "position "<< d_position << ", vector "<< d_vec_limit << ", byte " << (int)out[0] << std::endl;
+			}
+			break;
+	  }
+      // Tell runtime system how many output items we produced.
+      
+      return noutput_items;
+    }
+
+  } /* namespace midi */
+} /* namespace gr */
+

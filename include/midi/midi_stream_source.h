@@ -19,11 +19,11 @@
  */
 
 
-#ifndef INCLUDED_MIDI_MIDI_SINK_H
-#define INCLUDED_MIDI_MIDI_SINK_H
+#ifndef INCLUDED_MIDI_MIDI_STREAM_SOURCE_H
+#define INCLUDED_MIDI_MIDI_STREAM_SOURCE_H
 
 #include <midi/api.h>
-#include <gnuradio/block.h>
+#include <gnuradio/sync_block.h>
 
 namespace gr {
   namespace midi {
@@ -33,17 +33,17 @@ namespace gr {
      * \ingroup midi
      *
      */
-    class MIDI_API midi_sink : virtual public gr::block
+    class MIDI_API midi_stream_source : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<midi_sink> sptr;
+      typedef boost::shared_ptr<midi_stream_source> sptr;
 
       /*!
-       * \brief Return a shared_ptr to a new instance of midi::midi_sink.
+       * \brief Return a shared_ptr to a new instance of midi::midi_stream_source.
        *
-       * To avoid accidental use of raw pointers, midi::midi_sink's
+       * To avoid accidental use of raw pointers, midi::midi_stream_source's
        * constructor is in a private implementation
-       * class. midi::midi_sink::make is the public interface for
+       * class. midi::midi_stream_source::make is the public interface for
        * creating new instances.
        */
       static sptr make();
@@ -52,5 +52,5 @@ namespace gr {
   } // namespace midi
 } // namespace gr
 
-#endif /* INCLUDED_MIDI_MIDI_SINK_H */
+#endif /* INCLUDED_MIDI_MIDI_STREAM_SOURCE_H */
 

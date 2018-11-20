@@ -18,6 +18,8 @@
 # Boston, MA 02110-1301, USA.
 
 install(FILES
-    midi_midi_source.xml
-    midi_midi_sink.xml DESTINATION share/gnuradio/grc/blocks
+    midi_midi_pdu_source.xml
+    midi_midi_pdu_sink.xml
+    midi_midi_stream_source.xml
+    midi_midi_stream_sink.xml DESTINATION share/gnuradio/grc/blocks
 )

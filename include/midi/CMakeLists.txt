@@ -22,6 +22,8 @@
 ########################################################################
 install(FILES
     api.h
-    midi_source.h
-    midi_sink.h DESTINATION include/midi
+    midi_pdu_source.h
+    midi_pdu_sink.h
+    midi_stream_source.h
+    midi_stream_sink.h DESTINATION include/midi
 )

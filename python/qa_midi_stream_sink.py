@@ -23,7 +23,7 @@ from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import midi_swig as midi
 
-class qa_midi_source (gr_unittest.TestCase):
+class qa_midi_stream_sink (gr_unittest.TestCase):
 
     def setUp (self):
         self.tb = gr.top_block ()
@@ -38,4 +38,4 @@ class qa_midi_source (gr_unittest.TestCase):
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_midi_source, "qa_midi_source.xml")
+    gr_unittest.run(qa_midi_stream_sink, "qa_midi_stream_sink.xml")

@@ -18,36 +18,39 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_MIDI_MIDI_SINK_IMPL_H
-#define INCLUDED_MIDI_MIDI_SINK_IMPL_H
 
-#include <midi/midi_sink.h>
-#include "rtmidi/RtMidi.h"
+#ifndef INCLUDED_MIDI_MIDI_STREAM_SINK_H
+#define INCLUDED_MIDI_MIDI_STREAM_SINK_H
+
+#include <midi/api.h>
+#include <gnuradio/sync_block.h>
 
 namespace gr {
   namespace midi {
 
-    class midi_sink_impl : public midi_sink
+    /*!
+     * \brief <+description of block+>
+     * \ingroup midi
+     *
+     */
+    class MIDI_API midi_stream_sink : virtual public gr::sync_block
     {
-     private:
-      RtMidiOut *d_midiOut;
-	  void print_pdu(pmt::pmt_t pdu);
-	  
      public:
-      midi_sink_impl();
-      ~midi_sink_impl();
+      typedef boost::shared_ptr<midi_stream_sink> sptr;
 
-      // Where all the action really happens
-      void forecast (int noutput_items, gr_vector_int &ninput_items_required);
-
-      int general_work(int noutput_items,
-           gr_vector_int &ninput_items,
-           gr_vector_const_void_star &input_items,
-           gr_vector_void_star &output_items);
+      /*!
+       * \brief Return a shared_ptr to a new instance of midi::midi_stream_sink.
+       *
+       * To avoid accidental use of raw pointers, midi::midi_stream_sink's
+       * constructor is in a private implementation
+       * class. midi::midi_stream_sink::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make();
     };
 
   } // namespace midi
 } // namespace gr
 
-#endif /* INCLUDED_MIDI_MIDI_SINK_IMPL_H */
+#endif /* INCLUDED_MIDI_MIDI_STREAM_SINK_H */
 

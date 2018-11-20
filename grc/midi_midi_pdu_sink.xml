@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <block>
-  <name>midi_sink</name>
-  <key>midi_midi_sink</key>
-  <category>midi</category>
+  <name>midi_pdu_sink</name>
+  <key>midi_midi_pdu_sink</key>
+  <category>[midi]</category>
   <import>import midi</import>
-  <make>midi.midi_sink()</make>
+  <make>midi.midi_pdu_sink()</make>
   <sink>
 		<name>midiIn</name>
 		<type>message</type>

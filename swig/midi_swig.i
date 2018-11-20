@@ -8,12 +8,18 @@
 %include "midi_swig_doc.i"
 
 %{
-#include "midi/midi_source.h"
-#include "midi/midi_sink.h"
+#include "midi/midi_pdu_source.h"
+#include "midi/midi_pdu_sink.h"
+#include "midi/midi_stream_source.h"
+#include "midi/midi_stream_sink.h"
 %}
 
 
-%include "midi/midi_source.h"
-GR_SWIG_BLOCK_MAGIC2(midi, midi_source);
-%include "midi/midi_sink.h"
-GR_SWIG_BLOCK_MAGIC2(midi, midi_sink);
+%include "midi/midi_pdu_source.h"
+GR_SWIG_BLOCK_MAGIC2(midi, midi_pdu_source);
+%include "midi/midi_pdu_sink.h"
+GR_SWIG_BLOCK_MAGIC2(midi, midi_pdu_sink);
+%include "midi/midi_stream_source.h"
+GR_SWIG_BLOCK_MAGIC2(midi, midi_stream_source);
+%include "midi/midi_stream_sink.h"
+GR_SWIG_BLOCK_MAGIC2(midi, midi_stream_sink);

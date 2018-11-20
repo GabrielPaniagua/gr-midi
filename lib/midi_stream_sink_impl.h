@@ -18,39 +18,38 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifndef INCLUDED_MIDI_MIDI_STREAM_SINK_IMPL_H
+#define INCLUDED_MIDI_MIDI_STREAM_SINK_IMPL_H
 
-#ifndef INCLUDED_MIDI_MIDI_SOURCE_H
-#define INCLUDED_MIDI_MIDI_SOURCE_H
-
-#include <midi/api.h>
-#include <gnuradio/block.h>
+#include <midi/midi_stream_sink.h>
+#include "rtmidi/RtMidi.h"
 
 namespace gr {
   namespace midi {
 
-    /*!
-     * \brief <+description of block+>
-     * \ingroup midi
-     *
-     */
-    class MIDI_API midi_source : virtual public gr::block
+    class midi_stream_sink_impl : public midi_stream_sink
     {
+     private:
+      RtMidiOut *d_midiOut;
+	  int d_currentState;
+	  unsigned char d_byte;
+	  int d_count;
+	  int d_position;
+	  std::vector< unsigned char > d_message;
+	  void reset();
+	  
      public:
-      typedef boost::shared_ptr<midi_source> sptr;
+      midi_stream_sink_impl();
+      ~midi_stream_sink_impl();
 
-      /*!
-       * \brief Return a shared_ptr to a new instance of midi::midi_source.
-       *
-       * To avoid accidental use of raw pointers, midi::midi_source's
-       * constructor is in a private implementation
-       * class. midi::midi_source::make is the public interface for
-       * creating new instances.
-       */
-      static sptr make();
+      // Where all the action really happens
+      int work(int noutput_items,
+         gr_vector_const_void_star &input_items,
+         gr_vector_void_star &output_items);
     };
 
   } // namespace midi
 } // namespace gr
 
-#endif /* INCLUDED_MIDI_MIDI_SOURCE_H */
+#endif /* INCLUDED_MIDI_MIDI_STREAM_SINK_IMPL_H */
 

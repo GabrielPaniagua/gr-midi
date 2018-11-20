@@ -32,8 +32,10 @@ list(APPEND lib_sources
 
 list(APPEND midi_sources
 	${lib_sources}
-    midi_source_impl.cc
-    midi_sink_impl.cc
+    midi_pdu_source_impl.cc
+    midi_pdu_sink_impl.cc
+    midi_stream_source_impl.cc
+    midi_stream_sink_impl.cc
 )
 
 #la magia
@@ -71,12 +73,12 @@ include(GrTest)
 
 include_directories(${CPPUNIT_INCLUDE_DIRS})
 
-list(APPEND test_midi_sources
+list(APPEND test_midi_pdu_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/test_midi.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/qa_midi.cc
 )
 
-add_executable(test-midi ${test_midi_sources})
+add_executable(test-midi ${test_midi_pdu_sources})
 
 target_link_libraries(
   test-midi

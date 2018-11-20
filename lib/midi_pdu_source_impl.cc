@@ -23,70 +23,69 @@
 #endif
 
 #include <gnuradio/io_signature.h>
-#include "midi_sink_impl.h"
+#include "midi_pdu_source_impl.h"
 
 namespace gr {
   namespace midi {
 
-    midi_sink::sptr
-    midi_sink::make()
+    midi_pdu_source::sptr
+    midi_pdu_source::make()
     {
       return gnuradio::get_initial_sptr
-        (new midi_sink_impl());
+        (new midi_pdu_source_impl());
     }
 
-	void midi_sink_impl::print_pdu(pmt::pmt_t pdu)
-    {
-      pmt::pmt_t meta = pmt::car(pdu);
-      pmt::pmt_t vector = pmt::cdr(pdu);
-      size_t len = pmt::blob_length(vector);
-      size_t offset(0);
-      const uint8_t* d = (const uint8_t*) pmt::uniform_vector_elements(vector, offset);
-      std::vector<unsigned char> message;
-      for(size_t i=0; i<len; i++){
-        message.push_back(d[i]);
-		//printf("%02x ",d[i] );
-      }
-      d_midiOut->sendMessage( &message );
+	void midi_pdu_source_impl::callback_midi_source_pdu( double deltatime, std::vector< unsigned char > *message, void *userData ){
+		unsigned int nBytes = message->size();
+		std::vector< unsigned char > &vect = *message;
+		midi_pdu_source_impl* this_object = (midi_pdu_source_impl*)userData;
+		this_object->message_port_pub(pmt::mp("midiOut"),
+			pmt::cons(pmt::PMT_NIL,
+			pmt::init_u8vector(nBytes, vect)));
 	}
 
     /*
      * The private constructor
      */
-    midi_sink_impl::midi_sink_impl()
-      : gr::block("midi_sink",
+    midi_pdu_source_impl::midi_pdu_source_impl()
+      : gr::block("midi_pdu_source",
               gr::io_signature::make(0,0,0),
               gr::io_signature::make(0,0,0))
     {
-	  //inicializacion de puerto midi in
+		//inicializacion de puerto midi in
 	  try {
-	    d_midiOut = new RtMidiOut();
+	    d_midiIn = new RtMidiIn();
 	  }catch ( RtMidiError &error ) {
 	    error.printMessage();
 	  }
 	  try {
-		d_midiOut->openVirtualPort();
+		d_midiIn->openVirtualPort();
 	  }catch ( RtMidiError &error ) {
 		error.printMessage();
 	  }
-	  message_port_register_in(pmt::mp("midiIn"));
-	  set_msg_handler(pmt::mp("midiIn"), boost::bind(&midi_sink_impl::print_pdu, this, _1));
+	  
+      message_port_register_out(pmt::mp("midiOut"));
+      // queue instead of sent to the callback function.
+      d_midiIn->setCallback( this->callback_midi_source_pdu, (void*)this );
+      //d_midiin->setCallback( &mycallbackmidi);
+      // Don't ignore sysex, timing, or active sensing messages.
+      d_midiIn->ignoreTypes( false, false, false );
 	}
 
     /*
      * Our virtual destructor.
      */
-    midi_sink_impl::~midi_sink_impl()
+    midi_pdu_source_impl::~midi_pdu_source_impl()
     {
     }
 
     void
-    midi_sink_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+    midi_pdu_source_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
     {
     }
 
     int
-    midi_sink_impl::general_work (int noutput_items,
+    midi_pdu_source_impl::general_work (int noutput_items,
                        gr_vector_int &ninput_items,
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
@@ -94,8 +93,6 @@ namespace gr {
       consume_each (noutput_items);
       return noutput_items;
     }
-    
-    
 
   } /* namespace midi */
 } /* namespace gr */

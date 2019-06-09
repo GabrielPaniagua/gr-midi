@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2018 <+YOU OR YOUR COMPANY+>.
+ * Copyright 2019 Gabriel Paniagua.
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,31 +25,54 @@
 #include "rtmidi/RtMidi.h"
 
 namespace gr {
-  namespace midi {
-
-    class midi_pdu_source_impl : public midi_pdu_source
-    {
-     private:
-      RtMidiIn *d_midiIn;
-
-     public:
-      midi_pdu_source_impl();
-      ~midi_pdu_source_impl();
-
-	  static void callback_midi_source_pdu( double deltatime, std::vector< unsigned char > *message, void *userData );
-
-
-      // Where all the action really happens
-      void forecast (int noutput_items, gr_vector_int &ninput_items_required);
-
-      int general_work(int noutput_items,
-           gr_vector_int &ninput_items,
-           gr_vector_const_void_star &input_items,
-           gr_vector_void_star &output_items);
-    };
-
-  } // namespace midi
+	namespace midi {
+		
+		class midi_pdu_source_impl : public midi_pdu_source{
+			
+			private:
+			
+			// Rtmidi Object to input MIDI messages.
+			RtMidiIn *d_midiIn;
+			
+			// Customization MIDI conexion parameters.
+			bool sysex_check;
+			bool timing_check;
+			bool active_sensing_check;
+			
+			// Callback which receives the MIDI messages and sends the PDU message.
+			static void callback_midi_source_pdu(
+			 double deltatime,
+			 std::vector< unsigned char > *message,
+			 void *userData
+			);
+			
+			public:
+			
+			// Constructor with the custom parameters
+			midi_pdu_source_impl(
+			 const std::string name_conexion,
+			 const std::string name_port,
+			 bool sysex_check,
+			 bool timing_check,
+			 bool active_sensing_check
+			);
+			
+			~midi_pdu_source_impl();
+			
+			void forecast(
+			 int noutput_items,
+			 gr_vector_int &ninput_items_required
+			);
+			
+			int general_work(
+			 int noutput_items,
+			 gr_vector_int &ninput_items,
+			 gr_vector_const_void_star &input_items,
+			 gr_vector_void_star &output_items
+			);
+		};
+		 
+	 } // namespace midi
 } // namespace gr
 
 #endif /* INCLUDED_MIDI_MIDI_PDU_SOURCE_IMPL_H */
-

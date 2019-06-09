@@ -1,10 +1,28 @@
 <?xml version="1.0"?>
 <block>
-  <name>midi_pdu_sink</name>
+  <name>MIDI PDU Sink</name>
   <key>midi_midi_pdu_sink</key>
-  <category>[midi]</category>
+  <category>[MIDI]</category>
   <import>import midi</import>
-  <make>midi.midi_pdu_sink()</make>
+  <make>midi.midi_pdu_sink(
+  $name_conexion,
+  $name_port
+  )</make>
+  
+  <param>
+    <name>Name Conexion</name>
+    <key>name_conexion</key>
+    <value>GNU Radio MIDI Sink</value>
+    <type>string</type>
+  </param>  
+  
+  <param>
+    <name>Name Port</name>
+    <key>name_port</key>
+    <value>Port OUT</value>
+    <type>string</type>
+  </param>  
+  
   <sink>
 		<name>midiIn</name>
 		<type>message</type>

@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2018 <+YOU OR YOUR COMPANY+>.
+ * Copyright 2019 Gabriel Paniagua.
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ namespace gr {
        * class. midi::midi_pdu_source::make is the public interface for
        * creating new instances.
        */
-      static sptr make();
+      static sptr make(std::string name_conexion, std::string name_port, bool sysex_check, bool timing_check, bool active_sensing_check);
     };
 
   } // namespace midi

@@ -109,22 +109,6 @@ namespace gr {
 			delete d_midiIn;
 		}
 		
-		// The forecast and general work must be inplemented
-		// but they are unnused.
-		void midi_pdu_source_impl::forecast(
-		 int noutput_items, 
-		 gr_vector_int &ninput_items_required
-		){}
-
-		int midi_pdu_source_impl::general_work(
-		 int noutput_items,
-		 gr_vector_int &ninput_items,
-		 gr_vector_const_void_star &input_items,
-		 gr_vector_void_star &output_items
-		){
-			consume_each (noutput_items);
-			return noutput_items;
-		}
 		
 	} /* namespace midi */
 } /* namespace gr */

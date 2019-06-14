@@ -1,11 +1,28 @@
-This is the midi-write-a-block package meant as a guide to building
-out-of-tree packages. To use the midi blocks, the Python namespaces
-is in 'midi', which is imported as:
+Description: This module provides two blocks which do a input/output of MIDI messages.
 
-    import midi
+- Midi pdu source gets the MIDI messages from the system and outputs PDUs with the bytes of the message.
+It has parameters to give a custom name to the port and the conexion.
+Also it can ignore the system exclusive messages, the timing messages and the active sensing messages.
 
-See the Doxygen documentation for details about the blocks available
-in this package. A quick listing of the details can be found in Python
-after importing by using:
+- Midi pdu sink get PDUs messages with the MIDI message bytes and outputs the MIDI message to the system.
 
-    help(midi)
+This module only supports currently linux with Jack audio connection kit.
+More OS compatibility will be available soon.
+
+Installation:
+
+Jack audio connection kit is needed for this module.
+
+I suggest to install jack with Qjackctl.
+sudo apt-get install qjackctl
+
+The installation process is as follows:
+
+git clone https://github.com/GabrielPaniagua/gr-midi
+cd gr-midi
+mkdir build
+cd build/
+cmake ../
+make
+sudo make install
+sudo ldconfig

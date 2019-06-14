@@ -1,5 +1,5 @@
 title: The MIDI OOT Module
-brief: Short description of gr-midi
+brief: This module provides two blocks which do a input/output of MIDI messages.
 tags: # Tags are arbitrary, but look at CGRAN what other authors are using
   - sdr, MIDI
 author:
